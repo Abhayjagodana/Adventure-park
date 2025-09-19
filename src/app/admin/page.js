@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaUser, FaPenFancy, FaEnvelope } from "react-icons/fa"; // FaEnvelope for contact
+import { FaUser, FaHotel ,FaPenFancy, FaEnvelope } from "react-icons/fa"; // FaEnvelope for contact
 import AdminHeader from "./header/page";
+import { Bike } from 'lucide-react';
+
 
 export default function Dashboard() {
   const router = useRouter();
   const [totalUsers, setTotalUsers] = useState(0);
-  const [totalBloggers, setTotalBloggers] = useState(0);
-  const [totalContact, setTotalContact] = useState(0);
+  const [totalRides, setTotalRides] = useState(0);
+  const [totalrooms, setTotalRooms] = useState(0);
   // const [totalCourses, setTotalCourses] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -37,10 +39,15 @@ export default function Dashboard() {
         const dataUsers = await resUsers.json();
         setTotalUsers(dataUsers.totalUsers || 0);
 
-        // Fetch total bloggers
-        // const resBloggers = await fetch("/api/admin/blogger/count", { credentials: "include" });
-        // const dataBloggers = await resBloggers.json();
-        // setTotalBloggers(dataBloggers.totalBloggers || 0);
+        // Fetch total Rides
+        const resRides = await fetch("/api/admin/rides/count", { credentials: "include" });
+        const dataRides = await resRides.json();
+        setTotalRides(dataRides.totalRides || 0);
+
+        // Fetch total Resorts
+        const resRooms = await fetch("/api/admin/resorts/count", { credentials: "include" });
+        const dataRooms = await resRooms.json();
+        setTotalRooms(dataRooms.totalrooms || 0);
 
         //fetch total courses
         //         const resCourses = await fetch("/api/admin/course/count");
@@ -79,19 +86,19 @@ export default function Dashboard() {
             <p className="text-2xl font-bold">{totalUsers}</p>
           </div>
 
-          {/* Total Bloggers Card */}
-          {/* <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaPenFancy className="text-green-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total Bloggers</h2>
-            <p className="text-2xl font-bold">{totalBloggers}</p>
-          </div> */}
+          {/* Total Rides Card */}
+          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+            <Bike className="text-green-600 w-12 h-12 mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Total Rides</h2>
+            <p className="text-2xl font-bold">{totalRides}</p>
+          </div>
 
-          {/* Total Contact Card */}
-          {/* <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaEnvelope className="text-blue-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total Contact</h2>
-            <p className="text-2xl font-bold">{totalContact}</p>
-          </div> */}
+          {/* Total Resorts Card */}
+          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+            <FaHotel className="text-blue-600 w-12 h-12 mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Total Resorts</h2>
+            <p className="text-2xl font-bold">{totalrooms}</p>
+          </div>
 
           {/* Total Courses Card */}
           {/* <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
