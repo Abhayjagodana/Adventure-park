@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Header from "../Header/page";
+import Link from "next/link";
 
 export default function UserResorts() {
   const [resorts, setResorts] = useState([]);
@@ -54,7 +55,8 @@ export default function UserResorts() {
                     </span>
                   </div>
                   <button className="mt-4 w-full bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700">
-                    Book Now
+                    <Link href={`/booking/resorts/${room._id}`}>Book Now</Link>
+
                   </button>
                 </div>
               </div>

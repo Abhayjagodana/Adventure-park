@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Header from "../Header/page";
+import Link from "next/link";
 
 export default function RidesPage() {
   const [rides, setRides] = useState([]);
@@ -17,8 +18,8 @@ export default function RidesPage() {
 
   return (
     <div>
-      <Header/>
-    <div className="min-h-screen bg-gray-100 py-12 px-6">
+      <Header />
+      <div className="min-h-screen bg-gray-100 py-12 px-6">
         <h1 className="text-3xl font-bold text-purple-700 text-center mb-8">
           🎢 Available Rides
         </h1>
@@ -64,7 +65,7 @@ export default function RidesPage() {
                   </div>
 
                   <button className="mt-2 w-full bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700">
-                    Book Now
+                    <Link href={`/booking/rides/${ride._id}`}>Book Now</Link>
                   </button>
                 </div>
               </div>
