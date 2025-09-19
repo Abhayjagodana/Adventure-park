@@ -391,9 +391,10 @@ function AddRideForm() {
 
             {/* Ride Name */}
             <div className="mb-4">
-              <label className="block mb-1 font-semibold">Ride Name</label>
+              {/* <label className="block mb-1 font-semibold">Ride Name</label> */}
               <input
                 type="text"
+                placeholder="Ride Name"
                 value={rideName}
                 onChange={(e) => setRideName(e.target.value)}
                 className="w-full border p-2 rounded focus:ring-2 focus:ring-purple-400"
@@ -403,9 +404,10 @@ function AddRideForm() {
 
             {/* Capacity */}
             <div className="mb-4">
-              <label className="block mb-1 font-semibold">Capacity</label>
+              {/* <label className="block mb-1 font-semibold">Capacity</label> */}
               <input
                 type="number"
+                placeholder="Capacity"
                 value={capacity}
                 onChange={(e) => setCapacity(e.target.value)}
                 className="w-full border p-2 rounded focus:ring-2 focus:ring-purple-400"
@@ -415,9 +417,10 @@ function AddRideForm() {
 
             {/* Location */}
             <div className="mb-4">
-              <label className="block mb-1 font-semibold">Location</label>
+              {/* <label className="block mb-1 font-semibold">Location</label> */}
               <input
                 type="text"
+                placeholder="Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="w-full border p-2 rounded focus:ring-2 focus:ring-purple-400"
@@ -427,12 +430,13 @@ function AddRideForm() {
 
             {/* Information */}
             <div className="mb-4">
-              <label className="block mb-1 font-semibold">Information</label>
+              {/* <label className="block mb-1 font-semibold">Information</label> */}
               <textarea
                 value={information}
                 onChange={(e) => setInformation(e.target.value)}
                 className="w-full border p-2 rounded focus:ring-2 focus:ring-purple-400"
                 rows={3}
+                placeholder="Information"
                 required
               />
             </div>
