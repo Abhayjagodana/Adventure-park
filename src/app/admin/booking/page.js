@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
 
-export default function AdminBookings() {
+function AdminBookings() {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -169,3 +169,4 @@ export default function AdminBookings() {
         </div>
     );
 }
+export default AdminBookings;

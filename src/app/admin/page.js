@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaUser, FaHotel ,FaPenFancy, FaEnvelope } from "react-icons/fa"; // FaEnvelope for contact
+import { FaUser, FaHotel, FaBox, FaTicketAlt , FaEnvelope } from "react-icons/fa"; // FaEnvelope for contact
 import AdminHeader from "./header/page";
 import { Bike } from 'lucide-react';
 
@@ -12,7 +12,9 @@ export default function Dashboard() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalRides, setTotalRides] = useState(0);
   const [totalrooms, setTotalRooms] = useState(0);
-  // const [totalCourses, setTotalCourses] = useState(0);
+  const [totalpackage, setPackages] = useState(0);
+  const [totalbooking, setbooking] = useState(0);
+  const [totalcontact , setcontact]=useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -49,15 +51,20 @@ export default function Dashboard() {
         const dataRooms = await resRooms.json();
         setTotalRooms(dataRooms.totalrooms || 0);
 
-        //fetch total courses
-        //         const resCourses = await fetch("/api/admin/course/count");
-        // const dataCourses = await resCourses.json();
-        // setTotalCourses(dataCourses.totalCourses || 0);
+        //fetch total package
+        const respackage = await fetch("/api/admin/packages/count");
+        const dataCourses = await respackage.json();
+        setPackages(dataCourses.totalpackage || 0);
 
-        // Fetch total contacts
-        // const resContact = await fetch("/api/admin/contact/count", { credentials: "include" });
-        // const dataContact = await resContact.json();
-        // setTotalContact(dataContact.totalContact || 0);
+        // Fetch total booking
+        const resbooking = await fetch("/api/admin/booking/count", { credentials: "include" });
+        const dataContact = await resbooking.json();
+        setbooking(dataContact.totalbooking || 0);
+
+         // Fetch total booking
+        const rescontact = await fetch("/api/admin/contact/count", { credentials: "include" });
+        const datacontact = await rescontact.json();
+        setcontact(datacontact.totalcontact || 0);
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Failed to fetch data");
@@ -76,7 +83,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <AdminHeader/>
+      <AdminHeader />
       <div className="flex justify-center items-start min-h-screen bg-gray-100 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Total Users Card */}
@@ -100,12 +107,24 @@ export default function Dashboard() {
             <p className="text-2xl font-bold">{totalrooms}</p>
           </div>
 
-          {/* Total Courses Card */}
-          {/* <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-  <FaPenFancy className="text-red-600 w-12 h-12 mb-4" />
-  <h2 className="text-xl font-semibold mb-2">Total Courses</h2>
-  <p className="text-2xl font-bold">{totalCourses}</p>
-</div> */}
+          {/* Total package Card */}
+          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+            <FaBox className="text-red-600 w-12 h-12 mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Total package</h2>
+            <p className="text-2xl font-bold">{totalpackage}</p>
+          </div>
+
+          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+            <FaTicketAlt  className="text-red-600 w-12 h-12 mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Total booking</h2>
+            <p className="text-2xl font-bold">{totalbooking}</p>
+          </div>
+
+            <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+            <FaEnvelope   className="text-red-600 w-12 h-12 mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Total Contact</h2>
+            <p className="text-2xl font-bold">{totalcontact}</p>
+          </div>
         </div>
       </div>
     </div>

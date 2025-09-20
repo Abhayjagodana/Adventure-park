@@ -98,15 +98,8 @@ export async function POST(req) {
     await connect();
     const body = await req.json();
 
-    // const newBooking = new Booking(body);
-    // await newBooking.save();
-
-    const newBooking = new Booking({
-            ...data,
-            status: "Pending", // All new bookings start as Pending
-        });
-
-        const savedBooking = await newBooking.save();
+    const newBooking = new Booking(body);
+    await newBooking.save();
 
     return new Response(JSON.stringify({ success: true, booking: newBooking }), {
       status: 201,

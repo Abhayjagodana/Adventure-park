@@ -323,13 +323,11 @@ function BookingPage() {
         fetchPackages();
         fetchBookings();
 
-         // ✅ Polling every 5 seconds to auto-update status
-        const interval = setInterval(fetchBookings, 5000);
-        return () => clearInterval(interval);
-    
+        
+
     }, []);
 
-    
+
 
     const fetchResorts = async () => {
         try {
@@ -371,6 +369,8 @@ function BookingPage() {
             setBookings([]);
         }
     };
+
+    
 
     // Handle form input change
     const handleChange = (e) => {
@@ -487,7 +487,7 @@ function BookingPage() {
         setEditingId(null);
     };
 
-    
+
     return (
         <div>
             <Header />
@@ -633,7 +633,7 @@ function BookingPage() {
                                 <th className="border p-2">Date</th>
                                 <th className="border p-2">People</th>
                                 <th className="border p-2">Amount</th>
-                                <th className="border p-2">Status</th>
+                                {/* <th className="border p-2">Status</th> */}
 
                                 <th className="border p-2">Actions</th>
                             </tr>
@@ -650,10 +650,10 @@ function BookingPage() {
                                         <td className="border p-2">{b.date}</td>
                                         <td className="border p-2">{b.totalPeople}</td>
                                         <td className="border p-2 font-semibold text-green-700">₹{b.totalAmount}</td>
-                                        <td className={`border p-2 font-bold ${b.status === "Accepted" ? "text-green-600" : "text-orange-500"
-                                            }`}>
+                                        {/* <td className={`border p-2 font-bold ${b.status === "Accepted" ? "text-green-600" : "text-orange-500"}`}>
                                             {b.status || "Pending"}
-                                        </td>
+                                        </td> */}
+
                                         <td className="border p-2 flex justify-center gap-2">
                                             <button
                                                 className="bg-yellow-400 text-white px-2 py-1 rounded"
