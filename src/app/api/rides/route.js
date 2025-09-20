@@ -6,7 +6,7 @@ export async function GET() {
   try {
     await connect(); // ensures mongoose connection
 
-    const rides = await Ride.find({});
+    const rides = await Ride.find({}, "rideName , capacity , location , information , type , ageLimit , image").lean();
 
     return new Response(JSON.stringify({ rides }), { status: 200 });
   } catch (err) {
