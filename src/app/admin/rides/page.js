@@ -271,8 +271,8 @@ function AddRideForm() {
   const [capacity, setCapacity] = useState("");
   const [location, setLocation] = useState("");
   const [information, setInformation] = useState("");
-  const [type, setType] = useState("Thriller");
-  const [ageLimit, setAgeLimit] = useState("5-10");
+  const [type, setType] = useState("");
+  const [ageLimit, setAgeLimit] = useState("");
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
   const [rides, setRides] = useState([]);
@@ -282,6 +282,9 @@ function AddRideForm() {
   useEffect(() => {
     fetchRides();
   }, []);
+
+
+  
 
   async function fetchRides() {
     try {
@@ -308,6 +311,11 @@ function AddRideForm() {
   // Add / Update Ride
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (capacity === "" || Number (capacity) < 0) {
+      setMessage("❌ Capacity must be a positive number.");
+      return;
+    }
 
     const rideData = {
       rideName,
@@ -414,6 +422,7 @@ function AddRideForm() {
                 type="number"
                 placeholder="Capacity"
                 value={capacity}
+                min="0"
                 onChange={(e) => setCapacity(e.target.value)}
                 className="w-full border p-2 rounded focus:ring-2 focus:ring-purple-400"
                 required
@@ -459,6 +468,7 @@ function AddRideForm() {
                       checked={type === option}
                       onChange={(e) => setType(e.target.value)}
                       className="form-radio text-purple-600"
+                      required
                     />
                     {option}
                   </label>
@@ -480,6 +490,7 @@ function AddRideForm() {
                         checked={ageLimit === option}
                         onChange={(e) => setAgeLimit(e.target.value)}
                         className="form-radio text-purple-600"
+                        required
                       />
                       {option}
                     </label>

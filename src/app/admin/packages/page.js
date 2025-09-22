@@ -47,6 +47,36 @@ export default function AddPackageForm() {
     e.preventDefault();
     setMessage("");
 
+    if (!name.trim()) {
+      return setMessage("❌ Package name is required.");
+    }
+    if (!/^[A-Za-z\s]+$/.test(name.trim())) {
+      return setMessage("❌ Package name must contain only letters.");
+    }
+
+    // ✅ Price validation (must be positive numbers)
+    if (!adultPrice || !teenagerPrice || !kidsPrice) {
+      return setMessage("❌ All price fields are required.");
+    }
+    if (isNaN(adultPrice) || isNaN(teenagerPrice) || isNaN(kidsPrice)) {
+      return setMessage("❌ Prices must be valid numbers.");
+    }
+    if (adultPrice <= 0 || teenagerPrice <= 0 || kidsPrice <= 0) {
+      return setMessage("❌Prices cannot be negative.");
+    }
+
+    // ✅ Information validation
+    if (!information.trim()) {
+      return setMessage("❌ Information is required.");
+    }
+    // if (information.trim().split(/\s+/).length < 5) {
+    //   return setMessage("❌ Information must contain at least 5 words.");
+    // }
+
+    // ✅ Image validation (only required on Add)
+    if (!editingId && !image) {
+      return setMessage("❌ Please upload an image.");
+    }
     try {
       const url = editingId
         ? `/api/admin/packages/${editingId}`
@@ -69,7 +99,7 @@ export default function AddPackageForm() {
       if (!res.ok) return setMessage(data.error || "❌ Failed");
 
       setMessage(editingId ? "✅ Package updated!" : "✅ Package added!");
-      
+
       // reset form
       setName("");
       setAdultPrice("");
@@ -126,9 +156,8 @@ export default function AddPackageForm() {
 
           {message && (
             <p
-              className={`mb-4 text-center font-semibold ${
-                message.includes("✅") ? "text-green-600" : "text-red-600"
-              }`}
+              className={`mb-4 text-center font-semibold ${message.includes("✅") ? "text-green-600" : "text-red-600"
+                }`}
             >
               {message}
             </p>
@@ -151,6 +180,7 @@ export default function AddPackageForm() {
               type="number"
               value={adultPrice}
               onChange={(e) => setAdultPrice(e.target.value)}
+              min="0"
               className="w-full p-2 border rounded"
               required
             />
@@ -161,6 +191,7 @@ export default function AddPackageForm() {
             <input
               type="number"
               value={teenagerPrice}
+              min="0"
               onChange={(e) => setTeenagerPrice(e.target.value)}
               className="w-full p-2 border rounded"
               required
@@ -172,6 +203,7 @@ export default function AddPackageForm() {
             <input
               type="number"
               value={kidsPrice}
+              min="0"
               onChange={(e) => setKidsPrice(e.target.value)}
               className="w-full p-2 border rounded"
               required
@@ -182,6 +214,7 @@ export default function AddPackageForm() {
             <label className="block font-medium">Information</label>
             <textarea
               value={information}
+              min="0"
               onChange={(e) => setInformation(e.target.value)}
               className="w-full p-2 border rounded"
               rows="3"

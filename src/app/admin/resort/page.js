@@ -57,6 +57,11 @@ export default function AddRoomForm() {
 
     const data = await res.json();
 
+    if (price <= 0 || noOfRooms <= 0) {
+      return setMessage("❌Prices cannot be negative.");
+    }
+
+
     if (res.ok) {
       setMessage(editingId ? "Room updated successfully!" : "Room added successfully!");
       resetForm();
@@ -136,6 +141,7 @@ export default function AddRoomForm() {
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            min="0"
             placeholder="Price"
             className="w-full border p-2 rounded mb-4"
             required
@@ -144,6 +150,7 @@ export default function AddRoomForm() {
             type="number"
             value={noOfRooms}
             onChange={(e) => setNoOfRooms(e.target.value)}
+            min="0"
             placeholder="Number of Rooms"
             className="w-full border p-2 rounded mb-4"
             required
