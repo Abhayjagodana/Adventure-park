@@ -1,20 +1,40 @@
-"use client"
-import Image from "next/image";
+"use client";
 import { useEffect, useState } from "react";
 import Header from "../Header/page";
 import Link from "next/link";
 
 export default function RidesPage() {
   const [rides, setRides] = useState([]);
+  const [loading, setLoading] = useState(true); // track loading state
 
   useEffect(() => {
     async function fetchRides() {
-      const res = await fetch("/api/rides");
-      const data = await res.json();
-      setRides(data.rides || []);
+      try {
+        const res = await fetch("/api/rides");
+        const data = await res.json();
+        setRides(data.rides || []);
+      } catch (err) {
+        console.error("Failed to fetch rides", err);
+        setRides([]);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchRides();
   }, []);
+
+  // Skeleton loader component
+  const SkeletonCard = () => (
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+      <div className="w-full h-48 bg-gray-300"></div>
+      <div className="p-4 space-y-3">
+        <div className="h-6 bg-gray-300 rounded w-2/3"></div>
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+        <div className="h-10 bg-gray-300 rounded mt-4"></div>
+      </div>
+    </div>
+  );
 
   return (
     <div>
@@ -24,7 +44,14 @@ export default function RidesPage() {
           🎢 Available Rides
         </h1>
 
-        {rides.length > 0 ? (
+        {/* Loader */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[...Array(3)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : rides.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {rides.map((ride) => (
               <div
@@ -33,7 +60,11 @@ export default function RidesPage() {
               >
                 {ride.image ? (
                   <img
-                    src={ride.image && ride.image.trim() !== "" ? ride.image : "/placeholder.jpg"}
+                    src={
+                      ride.image && ride.image.trim() !== ""
+                        ? ride.image
+                        : "/placeholder.jpg"
+                    }
                     alt={ride.rideName}
                     className="w-full h-48 object-cover"
                   />
@@ -45,28 +76,37 @@ export default function RidesPage() {
 
                 <div className="p-4">
                   <h2 className="text-xl font-semibold text-purple-800">
-                    {ride.rideName}
+                    {ride.rideName || "-"}
                   </h2>
-                  <p className="text-gray-600 text-sm mb-3">{ride.information}</p>
+                  <p className="text-gray-600 text-sm mb-3">
+                    {ride.information || "-"}
+                  </p>
 
                   <div className="space-y-1 text-gray-700 mb-3">
                     <p>
-                      <span className="font-semibold">Capacity:</span> {ride.capacity}
+                      <span className="font-semibold">Capacity:</span>{" "}
+                      {ride.capacity || "-"}
                     </p>
                     <p>
-                      <span className="font-semibold">Location:</span> {ride.location}
+                      <span className="font-semibold">Location:</span>{" "}
+                      {ride.location || "-"}
                     </p>
                     <p>
-                      <span className="font-semibold">Type:</span> {ride.type}
+                      <span className="font-semibold">Type:</span>{" "}
+                      {ride.type || "-"}
                     </p>
                     <p>
-                      <span className="font-semibold">Age Limit:</span> {ride.ageLimit}
+                      <span className="font-semibold">Age Limit:</span>{" "}
+                      {ride.ageLimit || "-"}
                     </p>
                   </div>
 
-                  <button className="mt-2 w-full bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700">
-                    <Link href={`/booking/rides/${ride._id}`}>Book Now</Link>
-                  </button>
+                  <Link
+                    href="/booking"
+                    className="mt-2 block w-full text-center bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700"
+                  >
+                    Book Now
+                  </Link>
                 </div>
               </div>
             ))}

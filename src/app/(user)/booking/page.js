@@ -295,9 +295,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // ✅ Import router
+
 import Header from "../Header/page";
 
 function BookingPage() {
+    const router = useRouter(); // ✅ Router instance
+
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -427,6 +431,8 @@ function BookingPage() {
                 data = await res.json();
                 if (data.success) {
                     alert("Booking added successfully!");
+                    router.refresh(); // ✅ Refresh after mutation
+
                     // ✅ UPDATED: Add new booking directly to table
                     setBookings((prev) => [...prev, { ...bookingData, _id: data.bookingId }]);
                 }
@@ -463,7 +469,9 @@ function BookingPage() {
             const data = await res.json();
             if (data.success) {
                 alert("Booking deleted successfully!");
-                fetchBookings();
+                router.refresh(); // ✅ Refresh after mutation
+
+                // fetchBookings();
             }
         } catch (err) {
             console.error(err);
@@ -558,6 +566,8 @@ function BookingPage() {
                         ))}
                     </select>
 
+                    <label className="block font-bold">Child price 300</label>
+
                     <input
                         type="number"
                         name="child"
@@ -567,6 +577,8 @@ function BookingPage() {
                         className="w-full border p-2 rounded"
                         min="0"
                     />
+                    <label className="block font-bold">Teenage price 500</label>
+
                     <input
                         type="number"
                         name="teenage"
@@ -576,6 +588,8 @@ function BookingPage() {
                         className="w-full border p-2 rounded"
                         min="0"
                     />
+                    <label className="block font-bold">Adult price 700</label>
+
                     <input
                         type="number"
                         name="adult"
@@ -641,7 +655,7 @@ function BookingPage() {
                         <tbody>
                             {bookings.length > 0 ? (
                                 bookings.map((b, i) => (
-                                    <tr key={b._id } className={`text-center ${i % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
+                                    <tr key={b._id || i} className={`text-center ${i % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
                                         <td className="border p-2">{b.name}</td>
                                         <td className="border p-2">{b.email}</td>
                                         <td className="border p-2">{b.resort}</td>
@@ -652,12 +666,12 @@ function BookingPage() {
                                         <td className="border p-2 font-semibold text-green-700">₹{b.totalAmount}</td>
                                         <td
                                             className={`border p-2 font-bold ${b.status === "Accepted"
-                                                    ? "text-green-600"
-                                                    : "text-orange-500"
+                                                ? "text-green-600"
+                                                : "text-orange-500"
                                                 }`}
                                         >
                                             {b.status === "Accepted" ? "Accepted ✅" : "Pending ⏳"}
-                                        </td> 
+                                        </td>
 
                                         <td className="border p-2 flex justify-center gap-2">
                                             <button

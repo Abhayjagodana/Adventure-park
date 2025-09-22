@@ -145,7 +145,7 @@ export default function AdminHeader({ currentPage }) {
         { href: "/admin/packages", name: "Package", page: "Package" },
         { href: "/admin/booking", name: "Booking", page: "Booking" },
         { href: "/admin/contact", name: "Contact", page: "Contact" },
-        { href: "/admin/register", name: "Rigister", page: "Rigister" },
+        // { href: "/admin/register", name: "Rigister", page: "Rigister" },
     ];
 
     return (

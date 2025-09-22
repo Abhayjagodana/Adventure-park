@@ -63,6 +63,7 @@
 // }
 import { connect } from "../../../utils/dbconfig";
 import Booking from "../../../model/booking";
+import { revalidatePath } from "next/cache";
 
 // export async function POST(req) {
 //   try {
@@ -104,6 +105,7 @@ export async function POST(req) {
       status: "Pending",
     });
     await newBooking.save();
+    revalidatePath("/booking")
 
     return new Response(JSON.stringify({ success: true, booking: newBooking }), {
       status: 201,
@@ -124,6 +126,8 @@ export async function PUT(req) {
     const data = await req.json();
     const { _id, ...updateData } = data;
     const updatedBooking = await Booking.findByIdAndUpdate(_id, updateData, { new: true });
+    revalidatePath("/booking")
+
     return new Response(JSON.stringify({ success: true, booking: updatedBooking }), { status: 200 });
   } catch (err) {
     return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500 });
@@ -136,7 +140,10 @@ export async function DELETE(req) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     await Booking.findByIdAndDelete(id);
+    revalidatePath("/booking")
+
     return new Response(JSON.stringify({ success: true }), { status: 200 });
+
   } catch (err) {
     return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500 });
   }

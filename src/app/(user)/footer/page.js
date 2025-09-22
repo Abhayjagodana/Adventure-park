@@ -195,7 +195,7 @@ export default function Footer() {
             <li className="flex items-center gap-3">
               <FaPhoneAlt className="text-purple-400" />
               <a href="tel:6668880000" className="hover:text-purple-400">
-                666 888 0000
+                6353772828
               </a>
             </li>
             <li className="flex items-center gap-3">
@@ -204,12 +204,12 @@ export default function Footer() {
                 href="mailto:sneakerland218@gmail.com"
                 className="hover:text-purple-400"
               >
-                sneakerland218@gmail.com
+                abhayjagodana@gmail.com
               </a>
             </li>
             <li className="flex items-center gap-3">
               <FaMapMarkerAlt className="text-purple-400" />
-              <span>66 Broklyn Golden Street, New York</span>
+              <span>Surat Gujarat India </span>
             </li>
           </ul>
         </div>

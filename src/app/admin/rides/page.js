@@ -262,8 +262,11 @@ import AdminHeader from "../header/page";
 import { Trash } from 'lucide-react';
 import { SquarePen } from 'lucide-react';
 import { Plus } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 function AddRideForm() {
+      const router = useRouter(); // ✅ Router instance
+  
   const [rideName, setRideName] = useState("");
   const [capacity, setCapacity] = useState("");
   const [location, setLocation] = useState("");
@@ -343,7 +346,9 @@ function AddRideForm() {
     const res = await fetch(`/api/admin/rides/${id}`, { method: "DELETE" });
     if (res.ok) {
       setMessage("Ride deleted successfully!");
-      fetchRides();
+                          router.refresh(); // ✅ Refresh after mutation
+
+        setRides(rides.filter((r) => r._id !== id)); // Remove locally
     } else {
       setMessage("Failed to delete ride");
     }

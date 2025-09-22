@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
+import { useRouter } from "next/navigation";
 
 function AdminBookings() {
+    const router = useRouter(); // ✅ Router instance
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -34,9 +36,10 @@ function AdminBookings() {
             const data = await res.json();
             if (data.success) {
                 alert("Booking deleted successfully!");
-                fetchBookings(); // refresh table
+                setBookings((prev) => prev.filter((b) => b._id !== id));
             } else {
                 alert("Failed to delete booking: " + data.error);
+                router.refresh();
             }
         } catch (err) {
             console.error(err);
@@ -66,23 +69,25 @@ function AdminBookings() {
     //     }
     //   };
     // Accept booking
-    const handleAccept = async (id , booking) => {
-         if (booking.status === "Accepted") {
-        alert("This booking is already accepted ✅");
-        return; // stop execution
-    }
+    const handleAccept = async (id, booking) => {
+        //      if (booking.status === "Accepted") {
+        //     alert("This booking is already accepted ✅");
+        //     return; // stop execution
+        // }
         try {
             const res = await fetch("/api/booking", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ _id: id, status: "Accepted" }),
-                    //   body: JSON.stringify({ id, status: "Accepted" }), // ✅ use id
+                //   body: JSON.stringify({ id, status: "Accepted" }), // ✅ use id
 
             });
 
             const data = await res.json();
             if (data.success) {
                 alert("Booking Accepted!");
+                router.refresh(); // ✅ Refresh after mutation
+
                 setBookings((prev) =>
                     prev.map((b) => (b._id === id ? { ...b, status: "Accepted" } : b))
                 );
@@ -148,16 +153,16 @@ function AdminBookings() {
                                                         Accept
                                                     </button>
                                                 )} */}
- {b.status !== "Accepted" ? (
-        <button
-            onClick={() => handleAccept(b)}
-            className="px-3 py-1 bg-blue-500 text-white rounded"
-        >
-            Accept
-        </button>
-    ) : (
-        <span className="text-green-600 font-bold">Accepted ✅</span>
-    )}
+                                                {b.status !== "Accepted" ? (
+                                                    <button
+                                                        onClick={() => handleAccept(b)}
+                                                        className="px-3 py-1 bg-blue-500 text-white rounded"
+                                                    >
+                                                        Accept
+                                                    </button>
+                                                ) : (
+                                                    <span className="text-green-600 font-bold">Accepted ✅</span>
+                                                )}
                                                 {/* <button
                                                     className="bg-green-600 text-white px-2 py-1 rounded"
                                                     onClick={() => handleAccept(b._id)}

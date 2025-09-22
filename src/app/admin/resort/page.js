@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
 
+
 export default function AddRoomForm() {
   const [roomType, setRoomType] = useState("");
   const [information, setInformation] = useState("");
@@ -27,7 +28,7 @@ export default function AddRoomForm() {
     }
   }
 
-    // convert image to base64
+  // convert image to base64
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -59,7 +60,11 @@ export default function AddRoomForm() {
     if (res.ok) {
       setMessage(editingId ? "Room updated successfully!" : "Room added successfully!");
       resetForm();
-      fetchResorts();
+      if (editingId) {
+        setResorts(resorts.map((r) => (r._id === editingId ? data.room : r)));
+      } else {
+        setResorts([data.room, ...resorts]);
+      }
     } else {
       setMessage(data.error || "Failed to save room");
     }
@@ -70,7 +75,7 @@ export default function AddRoomForm() {
     const res = await fetch(`/api/admin/resorts/${id}`, { method: "DELETE" });
     if (res.ok) {
       setMessage("Room deleted successfully!");
-      fetchResorts();
+      setResorts(resorts.filter((r) => r._id !== id)); // Remove locally
     } else {
       setMessage("Failed to delete room");
     }
@@ -184,31 +189,41 @@ export default function AddRoomForm() {
           </thead>
           <tbody>
             {resorts.length > 0 ? (
-              resorts.map((room) => (
-                <tr key={room._id} className="text-center">
-                  <td className="border p-2">
-                    <img src={room.image} alt={room.roomType} className="w-20 h-16 object-cover" />
-                  </td>
-                  <td className="border p-2">{room.roomType}</td>
-                  <td className="border p-2">{room.information}</td>
-                  <td className="border p-2">₹{room.price}</td>
-                  <td className="border p-2">{room.noOfRooms}</td>
-                  <td className="p-2 border flex gap-2 justify-center">
-                    <button
-                      onClick={() => handleEdit(room)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(room._id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
+              resorts.map((room) =>
+                room ? (
+                  <tr key={room._id || Math.random()} className="text-center">
+                    <td className="border p-2">
+                      {room.image ? (
+                        <img
+                          src={room.image}
+                          alt={room.roomType || "Room"}
+                          className="w-20 h-16 object-cover"
+                        />
+                      ) : (
+                        <span className="text-gray-400">No Image</span>
+                      )}
+                    </td>
+                    <td className="border p-2">{room.roomType || "-"}</td>
+                    <td className="border p-2">{room.information || "-"}</td>
+                    <td className="border p-2">₹{room.price || "-"}</td>
+                    <td className="border p-2">{room.noOfRooms || "-"}</td>
+                    <td className="p-2 border flex gap-2 justify-center">
+                      <button
+                        onClick={() => handleEdit(room)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(room._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ) : null
+              )
             ) : (
               <tr>
                 <td colSpan="6" className="p-4 text-gray-500">
@@ -217,6 +232,7 @@ export default function AddRoomForm() {
               </tr>
             )}
           </tbody>
+
         </table>
       </div>
     </div>
