@@ -323,7 +323,7 @@ function BookingPage() {
         fetchPackages();
         fetchBookings();
 
-        
+
 
     }, []);
 
@@ -370,7 +370,7 @@ function BookingPage() {
         }
     };
 
-    
+
 
     // Handle form input change
     const handleChange = (e) => {
@@ -633,7 +633,7 @@ function BookingPage() {
                                 <th className="border p-2">Date</th>
                                 <th className="border p-2">People</th>
                                 <th className="border p-2">Amount</th>
-                                {/* <th className="border p-2">Status</th> */}
+                                <th className="border p-2">Status</th>
 
                                 <th className="border p-2">Actions</th>
                             </tr>
@@ -641,7 +641,7 @@ function BookingPage() {
                         <tbody>
                             {bookings.length > 0 ? (
                                 bookings.map((b, i) => (
-                                    <tr key={b._id} className={`text-center ${i % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
+                                    <tr key={b._id } className={`text-center ${i % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
                                         <td className="border p-2">{b.name}</td>
                                         <td className="border p-2">{b.email}</td>
                                         <td className="border p-2">{b.resort}</td>
@@ -650,9 +650,14 @@ function BookingPage() {
                                         <td className="border p-2">{b.date}</td>
                                         <td className="border p-2">{b.totalPeople}</td>
                                         <td className="border p-2 font-semibold text-green-700">₹{b.totalAmount}</td>
-                                        {/* <td className={`border p-2 font-bold ${b.status === "Accepted" ? "text-green-600" : "text-orange-500"}`}>
-                                            {b.status || "Pending"}
-                                        </td> */}
+                                        <td
+                                            className={`border p-2 font-bold ${b.status === "Accepted"
+                                                    ? "text-green-600"
+                                                    : "text-orange-500"
+                                                }`}
+                                        >
+                                            {b.status === "Accepted" ? "Accepted ✅" : "Pending ⏳"}
+                                        </td> 
 
                                         <td className="border p-2 flex justify-center gap-2">
                                             <button

@@ -15,6 +15,8 @@ const BookingSchema = new mongoose.Schema({
   date: { type: String, required: true },
   totalPeople: { type: Number, default: 0 },
   totalAmount: { type: Number, default: 0 },
+  status: { type: String, enum: ["Pending", "Accepted"], default: "Pending" }, // 👈 status field
+
 }, { timestamps: true });
 
 export default mongoose.models.Booking || mongoose.model("Booking", BookingSchema);

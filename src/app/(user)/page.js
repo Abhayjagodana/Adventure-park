@@ -112,7 +112,7 @@ export default function HomePage() {
           <div className="p-6 bg-white shadow-md rounded-lg">
             <div className="text-4xl mb-4">📅</div>
             <h5 className="font-bold">
-              <Link href="/resort">Book Resort</Link>
+              <Link href="/resorts">Book Resort</Link>
             </h5>
             <p>Join us for a season of adventure and relaxation.</p>
           </div>

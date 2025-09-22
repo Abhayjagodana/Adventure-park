@@ -66,27 +66,30 @@ function AdminBookings() {
     //     }
     //   };
     // Accept booking
-    const handleAccept = async (b) => {
+    const handleAccept = async (id , booking) => {
+         if (booking.status === "Accepted") {
+        alert("This booking is already accepted ✅");
+        return; // stop execution
+    }
         try {
             const res = await fetch("/api/booking", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: b._id, status: "Accepted" }),
+                body: JSON.stringify({ _id: id, status: "Accepted" }),
+                    //   body: JSON.stringify({ id, status: "Accepted" }), // ✅ use id
+
             });
+
             const data = await res.json();
             if (data.success) {
-                alert("Booking accepted!");
+                alert("Booking Accepted!");
                 setBookings((prev) =>
-                    prev.map((booking) =>
-                        booking._id === b._id ? { ...booking, status: "Accepted" } : booking
-                    )
+                    prev.map((b) => (b._id === id ? { ...b, status: "Accepted" } : b))
                 );
-            } else {
-                alert("Failed to accept booking: " + data.error);
             }
         } catch (err) {
             console.error(err);
-            alert("Error accepting booking");
+            alert("Failed to accept booking");
         }
     };
 
@@ -137,14 +140,39 @@ function AdminBookings() {
                         Update
                       </button> */}
 
-                                                {b.status !== "Accepted" && (
+                                                {/* {b.status !== "Accepted" && (
                                                     <button
                                                         onClick={() => handleAccept(b)}
                                                         className="px-3 py-1 bg-blue-500 text-white rounded"
                                                     >
                                                         Accept
                                                     </button>
-                                                )}
+                                                )} */}
+ {b.status !== "Accepted" ? (
+        <button
+            onClick={() => handleAccept(b)}
+            className="px-3 py-1 bg-blue-500 text-white rounded"
+        >
+            Accept
+        </button>
+    ) : (
+        <span className="text-green-600 font-bold">Accepted ✅</span>
+    )}
+                                                {/* <button
+                                                    className="bg-green-600 text-white px-2 py-1 rounded"
+                                                    onClick={() => handleAccept(b._id)}
+                                                >
+                                                    Accept
+                                                </button> */}
+
+                                                {/* {b.status !== "Accepted" && (
+                                                    <button
+                                                        className="bg-green-600 text-white px-2 py-1 rounded"
+                                                        onClick={() => handleAccept(b._id)}
+                                                    >
+                                                        Accept
+                                                    </button>
+                                                )} */}
                                                 <button
                                                     onClick={() => handleDelete(b._id)}
                                                     className="px-3 py-1 bg-red-500 text-white rounded"

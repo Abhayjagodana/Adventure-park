@@ -268,10 +268,10 @@ import Header from "../Header/page";
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-full flex flex-col bg-white shadow-2xl ">
       <Header />
 
-      <div className="flex justify-center items-center flex-1  bg-white-100 my-12 shadow-2xl	">
+      <div className="flex justify-center items-center flex-1 my-12 h-full 	">
         <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg">
           <h1 className="text-4xl font-bold text-purple-800 text-center mb-4">Contact Us</h1>
           <hr className="w-1/4 mx-auto mb-6 border-purple-800" />

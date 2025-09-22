@@ -31,6 +31,13 @@ export async function PUT(req) {
     const db = client.db("adventure");
     const { id, ...data } = await req.json();
 
+    // const bookingId = id || _id; // ✅ accept either id or _id
+
+    // if (!bookingId)
+    //   return new Response(
+    //     JSON.stringify({ success: false, error: "Booking ID missing" }),
+    //     { status: 400 }
+    //   );
     if (!id) return new Response(JSON.stringify({ success: false, error: "Booking ID missing" }), { status: 400 });
 
     await db.collection("booking").updateOne({ _id: new ObjectId(id) }, { $set: data });
