@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
+import Loader from "../loader";
 
 export default function AdminContacts() {
   const [contacts, setContacts] = useState([]);
@@ -16,10 +17,10 @@ export default function AdminContacts() {
     fetchContacts();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><Loader /></p>;
 
   return (
-      <div>
+    <div>
       <AdminHeader />
 
       <div className="max-w-7xl mx-auto p-6 bg-white shadow-xl rounded-2xl my-32">
@@ -44,9 +45,8 @@ export default function AdminContacts() {
                   contacts.map((c, i) => (
                     <tr
                       key={c._id}
-                      className={`text-center ${
-                        i % 2 === 0 ? "bg-gray-50" : "bg-white"
-                      } hover:bg-gray-100`}
+                      className={`text-center ${i % 2 === 0 ? "bg-gray-50" : "bg-white"
+                        } hover:bg-gray-100`}
                     >
                       <td className="border p-2">{c.name}</td>
                       <td className="border p-2">{c.email}</td>

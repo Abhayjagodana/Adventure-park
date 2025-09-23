@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
 import { useRouter } from "next/navigation";
+import Loader from "../loader";
 
 function AdminBookings() {
     const router = useRouter(); // ✅ Router instance
@@ -104,7 +105,9 @@ function AdminBookings() {
             <div className="max-w-7xl mx-auto p-6 bg-white shadow-xl rounded-2xl my-32">
                 <h1 className="text-2xl font-bold mb-4 text-center text-purple-700">📋 All Bookings</h1>
 
-                {loading && <p className="text-center text-gray-500">Loading bookings...</p>}
+                {loading && <div className="text-center text-gray-500">
+                    <Loader />
+                </div>}
 
                 {!loading && (
                     <div className="overflow-x-auto">

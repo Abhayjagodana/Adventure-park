@@ -11,21 +11,28 @@ export default function AddRoomForm() {
   const [noOfRooms, setNoOfRooms] = useState("");
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
-  const [resorts, setResorts] = useState([]);
+  const [resorts, setResorts] = useState(null);
   const [editingId, setEditingId] = useState(null);
+  const [loading, setLoading] = useState(false); // loader state
 
   useEffect(() => {
     fetchResorts();
   }, []);
 
   async function fetchResorts() {
+        // setLoading(true);
+
     try {
       const res = await fetch("/api/admin/resorts");
       const data = await res.json();
       setResorts(data.resorts || []);
     } catch (err) {
       console.error("Failed to fetch resorts", err);
+       setResorts([]);
     }
+    // finally {
+    //   setLoading(false);
+    // }
   }
 
   // convert image to base64
@@ -181,66 +188,93 @@ export default function AddRoomForm() {
         </form>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-xl max-w-5xl mx-auto mt-8">
-        <h3 className="text-xl font-bold mb-4 text-purple-700 text-center">🏨 Resort Rooms</h3>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-purple-100 text-purple-800">
-              <th className="border p-2">Image</th>
-              <th className="border p-2">Room Type</th>
-              <th className="border p-2">Information</th>
-              <th className="border p-2">Price</th>
-              <th className="border p-2">No. of Rooms</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {resorts.length > 0 ? (
-              resorts.map((room) =>
-                room ? (
-                  <tr key={room._id || Math.random()} className="text-center">
-                    <td className="border p-2">
-                      {room.image ? (
-                        <img
-                          src={room.image}
-                          alt={room.roomType || "Room"}
-                          className="w-20 h-16 object-cover"
-                        />
-                      ) : (
-                        <span className="text-gray-400">No Image</span>
-                      )}
-                    </td>
-                    <td className="border p-2">{room.roomType || "-"}</td>
-                    <td className="border p-2">{room.information || "-"}</td>
-                    <td className="border p-2">₹{room.price || "-"}</td>
-                    <td className="border p-2">{room.noOfRooms || "-"}</td>
-                    <td className="p-2 border flex gap-2 justify-center">
-                      <button
-                        onClick={() => handleEdit(room)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(room._id)}
-                        className="px-3 py-1 bg-red-500 text-white rounded"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ) : null
-              )
-            ) : (
-              <tr>
-                <td colSpan="6" className="p-4 text-gray-500">
-                  No rooms added yet.
-                </td>
-              </tr>
-            )}
-          </tbody>
+      {/* Table */}
+      <div className="bg-white p-6 rounded-3xl shadow-xl max-w-6xl mx-auto mt-12 overflow-x-auto">
+        <h3 className="text-2xl font-bold mb-6 text-purple-700 text-center">🏨 Resort Rooms</h3>
 
-        </table>
+        {resorts === null ? (
+          // Loader while fetching data
+          <div className="flex justify-center items-center py-12">
+            <svg
+              className="animate-spin h-10 w-10 text-purple-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+          </div>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-purple-100">
+              <tr>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-purple-800">Image</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-purple-800">Room Type</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-purple-800">Information</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-purple-800">Price</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-purple-800">No. of Rooms</th>
+                <th className="px-4 py-3 text-center text-sm font-semibold text-purple-800">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {resorts.length > 0 ? (
+                resorts.map((room) =>
+                  room ? (
+                    <tr key={room._id || Math.random()} className="hover:bg-purple-50 transition duration-200">
+                      <td className="px-4 py-3">
+                        {room.image ? (
+                          <img
+                            src={room.image}
+                            alt={room.roomType || "Room"}
+                            className="w-24 h-16 object-cover rounded-lg"
+                          />
+                        ) : (
+                          <span className="text-gray-400">No Image</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">{room.roomType || "-"}</td>
+                      <td className="px-4 py-3">{room.information || "-"}</td>
+                      <td className="px-4 py-3">₹{room.price || "-"}</td>
+                      <td className="px-4 py-3">{room.noOfRooms || "-"}</td>
+                      <td className="px-4 py-3 flex gap-2 justify-center">
+                        <button
+                          onClick={() => handleEdit(room)}
+                          className="px-4 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(room._id)}
+                          className="px-4 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ) : null
+                )
+              ) : (
+                <tr>
+                  <td colSpan="6" className="px-4 py-6 text-center text-gray-500">
+                    No rooms added yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

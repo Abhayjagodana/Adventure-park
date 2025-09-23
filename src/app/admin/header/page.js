@@ -98,18 +98,122 @@
 //     </div>
 //   );
 // }
+
+
+
+
+// "use client";
+
+// import Link from "next/link";
+// import Image from "next/image";
+// import { useState, useEffect } from "react";
+// import { useRouter } from "next/navigation";
+
+// export default function AdminHeader({ currentPage }) {
+//     const [email, setEmail] = useState(null);
+//     const router = useRouter();
+
+//     // Fetch logged-in admin's info
+//     useEffect(() => {
+//         async function fetchUser() {
+//             try {
+//                 const res = await fetch("/api/admin/me", {
+//                     method: "GET",
+//                     credentials: "include",
+//                 });
+//                 if (res.ok) {
+//                     const data = await res.json();
+//                     setEmail(data.email);
+//                 } else {
+//                     setEmail(null);
+//                 }
+//             } catch (err) {
+//                 setEmail(null);
+//             }
+//         }
+//         fetchUser();
+//     }, []);
+
+//     // Handle logout
+//     const handleLogout = async () => {
+//         await fetch("/api/admin/logout", { method: "POST" });
+//         setEmail(null);
+//         router.push("/admin/login");
+//     };
+
+//     const links = [
+//         { href: "/admin/", name: "Dashboard", page: "dashboard" },
+//         { href: "/admin/user", name: "User", page: "user" },
+//         { href: "/admin/rides", name: "Rides", page: "Rides" },
+//         { href: "/admin/resort", name: "Resort", page: "Resort" },
+//         { href: "/admin/packages", name: "Package", page: "Package" },
+//         { href: "/admin/booking", name: "Booking", page: "Booking" },
+//         { href: "/admin/contact", name: "Contact", page: "Contact" },
+//         // { href: "/admin/register", name: "Rigister", page: "Rigister" },
+//     ];
+
+//     return (
+//         <header className="fixed top-0 w-full bg-gray-200 shadow-md z-50">
+//             <div className="max-w-8xl mx-auto flex items-center justify-between text-xl px-6 h-16">
+//                 {/* Logo */}
+
+//                     <span className="font-bold text-lg">Admin Panel</span>
+
+
+//                 {/* Nav Links */}
+//                 <nav className="flex gap-16">
+//                     {links.map((link) => (
+//                         <Link
+//                             key={link.page}
+//                             href={link.href}
+//                             className={`text-lg font-serif hover:text-purple-600 ${currentPage === link.page ? "text-purple-600 font-bold" : "text-black"
+//                                 }`}
+//                         >
+//                             {link.name}
+//                         </Link>
+//                     ))}
+//                 </nav>
+
+//                 {/* Login/Logout */}
+//                 <div>
+//                     {email ? (
+//                         <div className="flex items-center gap-4">
+//                             <span className="font-bold">{email}</span>
+//                             <button
+//                                 onClick={handleLogout}
+//                                 className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+//                             >
+//                                 Logout
+//                             </button>
+//                         </div>
+//                     ) : (
+//                         <Link
+//                             href="/admin/login"
+//                             className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+//                         >
+//                             Login
+//                         </Link>
+//                     )}
+//                 </div>
+//             </div>
+//         </header>
+//     );
+// }
+
+
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Menu, X } from "lucide-react"; // for hamburger icons
 
 export default function AdminHeader({ currentPage }) {
     const [email, setEmail] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
     const router = useRouter();
 
-    // Fetch logged-in admin's info
+    // Fetch logged-in admin info
     useEffect(() => {
         async function fetchUser() {
             try {
@@ -123,7 +227,7 @@ export default function AdminHeader({ currentPage }) {
                 } else {
                     setEmail(null);
                 }
-            } catch (err) {
+            } catch {
                 setEmail(null);
             }
         }
@@ -145,24 +249,24 @@ export default function AdminHeader({ currentPage }) {
         { href: "/admin/packages", name: "Package", page: "Package" },
         { href: "/admin/booking", name: "Booking", page: "Booking" },
         { href: "/admin/contact", name: "Contact", page: "Contact" },
-        // { href: "/admin/register", name: "Rigister", page: "Rigister" },
     ];
 
     return (
         <header className="fixed top-0 w-full bg-gray-200 shadow-md z-50">
-            <div className="max-w-8xl mx-auto flex items-center justify-between text-xl px-6 h-16">
+            <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
                 {/* Logo */}
-               
-                    <span className="font-bold text-lg">Admin Panel</span>
-                
-
-                {/* Nav Links */}
-                <nav className="flex gap-16">
+                <Link href="/admin/">
+                    <span className="font-bold text-2xl">Admin Panel</span>
+                </Link>
+                {/* Desktop Nav */}
+                <nav className="hidden md:flex gap-8">
                     {links.map((link) => (
                         <Link
                             key={link.page}
                             href={link.href}
-                            className={`text-lg font-serif hover:text-purple-600 ${currentPage === link.page ? "text-purple-600 font-bold" : "text-black"
+                            className={`text-base font-medium hover:text-purple-600 ${currentPage === link.page
+                                    ? "text-purple-600 font-bold"
+                                    : "text-black"
                                 }`}
                         >
                             {link.name}
@@ -170,10 +274,10 @@ export default function AdminHeader({ currentPage }) {
                     ))}
                 </nav>
 
-                {/* Login/Logout */}
-                <div>
+                {/* Right Side (Email / Login / Logout) */}
+                <div className="hidden md:flex items-center gap-4">
                     {email ? (
-                        <div className="flex items-center gap-4">
+                        <>
                             <span className="font-bold">{email}</span>
                             <button
                                 onClick={handleLogout}
@@ -181,7 +285,7 @@ export default function AdminHeader({ currentPage }) {
                             >
                                 Logout
                             </button>
-                        </div>
+                        </>
                     ) : (
                         <Link
                             href="/admin/login"
@@ -191,7 +295,60 @@ export default function AdminHeader({ currentPage }) {
                         </Link>
                     )}
                 </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden flex items-center"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                >
+                    {menuOpen ? <X size={28} /> : <Menu size={28} />}
+                </button>
             </div>
+
+            {/* Mobile Dropdown Menu */}
+            {menuOpen && (
+                <div className="md:hidden bg-gray-100 shadow-lg flex flex-col items-center gap-4 py-6">
+                    {links.map((link) => (
+                        <Link
+                            key={link.page}
+                            href={link.href}
+                            onClick={() => setMenuOpen(false)}
+                            className={`text-lg font-medium hover:text-purple-600 ${currentPage === link.page
+                                    ? "text-purple-600 font-bold"
+                                    : "text-black"
+                                }`}
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+
+                    <div className="mt-4">
+                        {email ? (
+                            <div className="flex flex-col items-center gap-3">
+                                <span className="font-bold">{email}</span>
+                                <button
+                                    onClick={() => {
+                                        handleLogout();
+                                        setMenuOpen(false);
+                                    }}
+                                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                href="/admin/login"
+                                onClick={() => setMenuOpen(false)}
+                                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                            >
+                                Login
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 }
+

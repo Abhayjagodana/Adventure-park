@@ -26,7 +26,18 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Footer from "./footer/page";
+import { useEffect, useState } from "react";
+import Loader from "./loader";
 export default function HomePage() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for 2 seconds (you can adjust this or tie it to real API)
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader />;
   return (
     <div className="boxed_wrapper">
       {/* Header (replace with your own component later) */}
@@ -262,7 +273,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <Footer/>
+      <Footer />
     </div>
   );
 }

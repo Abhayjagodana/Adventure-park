@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaUser, FaHotel, FaBox, FaTicketAlt , FaEnvelope } from "react-icons/fa"; // FaEnvelope for contact
+import { FaUser, FaHotel, FaBox, FaTicketAlt, FaEnvelope } from "react-icons/fa"; // FaEnvelope for contact
 import AdminHeader from "./header/page";
 import { Bike } from 'lucide-react';
+import Loader from "./loader";
+import Link from "next/link";
 
 
 export default function Dashboard() {
@@ -14,7 +16,7 @@ export default function Dashboard() {
   const [totalrooms, setTotalRooms] = useState(0);
   const [totalpackage, setPackages] = useState(0);
   const [totalbooking, setbooking] = useState(0);
-  const [totalcontact , setcontact]=useState(0);
+  const [totalcontact, setcontact] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -61,7 +63,7 @@ export default function Dashboard() {
         const dataContact = await resbooking.json();
         setbooking(dataContact.totalbooking || 0);
 
-         // Fetch total booking
+        // Fetch total booking
         const rescontact = await fetch("/api/admin/contact/count", { credentials: "include" });
         const datacontact = await rescontact.json();
         setcontact(datacontact.totalcontact || 0);
@@ -78,7 +80,7 @@ export default function Dashboard() {
       if (ok) fetchCounts();
     })();
   }, []);
-  if (loading) return "loading...";
+  if (loading) return <Loader />;
   if (error) return <div className="text-center mt-6 text-red-600">{error}</div>;
 
   return (
@@ -87,44 +89,60 @@ export default function Dashboard() {
       <div className="flex justify-center items-start min-h-screen bg-gray-100 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Total Users Card */}
-          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaUser className="text-purple-800 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total Users</h2>
-            <p className="text-2xl font-bold">{totalUsers}</p>
-          </div>
+          <Link href="/admin/user">
+            <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+              <FaUser className="text-purple-800 w-12 h-12 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Total Users</h2>
+              <p className="text-2xl font-bold">{totalUsers}</p>
+            </div>
+          </Link>
 
           {/* Total Rides Card */}
-          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <Bike className="text-green-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total Rides</h2>
-            <p className="text-2xl font-bold">{totalRides}</p>
-          </div>
+          <Link href="/admin/rides">
+            <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+              <Bike className="text-green-600 w-12 h-12 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Total Rides</h2>
+              <p className="text-2xl font-bold">{totalRides}</p>
+            </div>
+          </Link>
 
           {/* Total Resorts Card */}
-          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaHotel className="text-blue-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total Resorts</h2>
-            <p className="text-2xl font-bold">{totalrooms}</p>
-          </div>
+          <Link href="/admin/resort">
+            <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+              <FaHotel className="text-blue-600 w-12 h-12 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Total Resorts</h2>
+              <p className="text-2xl font-bold">{totalrooms}</p>
+            </div>
+          </Link>
 
           {/* Total package Card */}
-          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaBox className="text-red-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total package</h2>
-            <p className="text-2xl font-bold">{totalpackage}</p>
-          </div>
-
-          <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaTicketAlt  className="text-red-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total booking</h2>
-            <p className="text-2xl font-bold">{totalbooking}</p>
-          </div>
-
+          <Link href="/admin/packages">
             <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
-            <FaEnvelope   className="text-red-600 w-12 h-12 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Total Contact</h2>
-            <p className="text-2xl font-bold">{totalcontact}</p>
-          </div>
+              <FaBox className="text-red-600 w-12 h-12 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Total package</h2>
+              <p className="text-2xl font-bold">{totalpackage}</p>
+            </div>
+          </Link>
+
+          {/* Total booking Card */}
+          <Link href="/admin/booking">
+            <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+              <FaTicketAlt className="text-red-600 w-12 h-12 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Total booking</h2>
+              <p className="text-2xl font-bold">{totalbooking}</p>
+            </div>
+          </Link>
+
+          {/* Total contact Card */}
+
+          <Link href="/admin/contact">
+            <div className="bg-white shadow-lg rounded-lg p-10 text-center w-64 aspect-square flex flex-col justify-center items-center">
+              <FaEnvelope className="text-red-600 w-12 h-12 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Total Contact</h2>
+              <p className="text-2xl font-bold">{totalcontact}</p>
+            </div>
+          </Link>
+
         </div>
       </div>
     </div>

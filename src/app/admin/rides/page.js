@@ -275,7 +275,7 @@ function AddRideForm() {
   const [ageLimit, setAgeLimit] = useState("");
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
-  const [rides, setRides] = useState([]);
+  const [rides, setRides] = useState(null);
   const [editingId, setEditingId] = useState(null); // ✅ Track edit mode
 
   // Fetch rides
@@ -293,6 +293,8 @@ function AddRideForm() {
       setRides(data.rides || []);
     } catch (err) {
       console.error("Failed to fetch rides", err);
+          setRides([]); // fail-safe: show empty table
+
     }
   }
 
@@ -532,72 +534,97 @@ function AddRideForm() {
       </div>
 
       {/* Rides Table */}
-      <div className="bg-white p-6 rounded-2xl shadow-lg overflow-x-auto mx-6 my-10">
-        <h3 className="text-xl font-bold mb-4 text-purple-700 text-center">
-          📋 All Rides
-        </h3>
-        <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
-          <thead>
-            <tr className="bg-purple-50 text-purple-800">
-              <th className="p-2 border">Ride Name</th>
-              <th className="p-2 border">Capacity</th>
-              <th className="p-2 border">Location</th>
-              <th className="p-2 border">Type</th>
-              <th className="p-2 border">Age Limit</th>
-              <th className="p-2 border">Info</th>
-              <th className="p-2 border">Image</th>
-              <th className="p-2 border">Actions</th>
+<div className="bg-white p-6 rounded-2xl shadow-lg overflow-x-auto mx-6 my-10">
+  <h3 className="text-xl font-bold mb-4 text-purple-700 text-center">
+    📋 All Rides
+  </h3>
+
+  {rides === null ? (
+    // Loader
+    <div className="flex justify-center items-center py-12">
+      <svg
+        className="animate-spin h-10 w-10 text-purple-600"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        ></path>
+      </svg>
+    </div>
+  ) : (
+    <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+      <thead>
+        <tr className="bg-purple-50 text-purple-800">
+          <th className="p-2 border">Ride Name</th>
+          <th className="p-2 border">Capacity</th>
+          <th className="p-2 border">Location</th>
+          <th className="p-2 border">Type</th>
+          <th className="p-2 border">Age Limit</th>
+          <th className="p-2 border">Info</th>
+          <th className="p-2 border">Image</th>
+          <th className="p-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rides.length > 0 ? (
+          rides.map((ride) => (
+            <tr key={ride._id} className="hover:bg-gray-50 transition-colors">
+              <td className="p-2 border">{ride.rideName}</td>
+              <td className="p-2 border">{ride.capacity}</td>
+              <td className="p-2 border">{ride.location}</td>
+              <td className="p-2 border">{ride.type}</td>
+              <td className="p-2 border">{ride.ageLimit}</td>
+              <td className="p-2 border text-sm text-gray-600">{ride.information}</td>
+              <td className="p-2 border">
+                {ride.image ? (
+                  <img
+                    src={ride.image}
+                    alt={ride.rideName}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                ) : (
+                  <span className="text-gray-400">No Image</span>
+                )}
+              </td>
+              <td className="p-2 border flex gap-2 justify-center">
+                <button
+                  onClick={() => handleEdit(ride)}
+                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  <SquarePen /> Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(ride._id)}
+                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                  <Trash /> Delete
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {rides.length > 0 ? (
-              rides.map((ride) => (
-                <tr key={ride._id} className="hover:bg-gray-50 transition-colors">
-                  <td className="p-2 border">{ride.rideName}</td>
-                  <td className="p-2 border">{ride.capacity}</td>
-                  <td className="p-2 border">{ride.location}</td>
-                  <td className="p-2 border">{ride.type}</td>
-                  <td className="p-2 border">{ride.ageLimit}</td>
-                  <td className="p-2 border text-sm text-gray-600">
-                    {ride.information}
-                  </td>
-                  <td className="p-2 border">
-                    {ride.image ? (
-                      <img
-                        src={ride.image}
-                        alt={ride.rideName}
-                        className="w-16 h-16 object-cover rounded"
-                      />
-                    ) : (
-                      <span className="text-gray-400">No Image</span>
-                    )}
-                  </td>
-                  <td className="p-2 border flex gap-2 justify-center">
-                    <button
-                      onClick={() => handleEdit(ride)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                      <SquarePen /> Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(ride._id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      <Trash /> Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8" className="text-center p-4 text-gray-500">
-                  No rides available.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="8" className="text-center p-4 text-gray-500">
+              No rides available.
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  )}
+</div>
     </div>
   );
 }
