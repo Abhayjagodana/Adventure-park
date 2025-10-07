@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata = {
     title: "Sneaker Land - Adventure Park",
@@ -17,7 +18,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center">
                     <nav className="mb-2">
                         <ul className="flex space-x-2 text-white text-sm">
-                            <li><a href="/" className="hover:underline">Home</a></li>
+                            <li><Link href="/" className="hover:underline">Home</Link></li>
                             <li>/</li>
                             <li>About Us</li>
                         </ul>
