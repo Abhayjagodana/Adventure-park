@@ -117,14 +117,14 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { HiMenu, HiX } from "react-icons/hi";
 
-// Custom font from Tailwind config (e.g., Poppins/Inter/Roboto)
 export default function Header() {
   const [email, setEmail] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
-  // Fetch user info
   useEffect(() => {
     async function fetchUser() {
       try {
@@ -143,7 +143,6 @@ export default function Header() {
     fetchUser();
   }, []);
 
-  // Logout handler
   const handleLogout = async () => {
     setLoading(true);
     try {
@@ -151,78 +150,108 @@ export default function Header() {
         method: "POST",
         credentials: "include",
       });
-
       if (res.ok) {
         setEmail(null);
         router.push("/login");
-      } else {
-        console.error("Logout failed");
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
+      } else console.error("Logout failed");
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <header className="flex flex-wrap justify-between items-center px-8 py-4 bg-gray-50 shadow-md font-sans">
-      {/* Brand */}
-      <div className="text-3xl font-extrabold text-purple-700 tracking-wide">
-        <Link href="/">Sneaker Land</Link>
-      </div>
+    <header className="bg-gray-50 shadow-md font-sans">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Brand */}
+        <div className="text-2xl sm:text-3xl font-extrabold text-purple-700 tracking-wide">
+          <Link href="/">Sneaker Land</Link>
+        </div>
 
-      {/* Navigation */}
-      <nav className="hidden md:flex gap-8 text-lg font-medium text-gray-700">
-        <Link href="/rides" className="hover:text-purple-700 transition">
-          Rider
-        </Link>
-        <Link href="/resorts" className="hover:text-purple-700 transition">
-          Resort
-        </Link>
-        <Link href="/about" className="hover:text-purple-700 transition">
-          About
-        </Link>
-        <Link href="/contact" className="hover:text-purple-700 transition">
-          Contact
-        </Link>
-        <Link href="/package" className="hover:text-purple-700 transition">
-          Package
-        </Link>
-        <Link href="/booking" className="hover:text-purple-700 transition">
-          Booking
-        </Link>
-        <Link href="/admin/login" className="hover:text-purple-700 transition">
-         Admin
-        </Link>
-      </nav>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex gap-6 text-gray-700 font-medium text-lg">
+          <Link href="/rides" className="hover:text-purple-700 transition">Rider</Link>
+          <Link href="/resorts" className="hover:text-purple-700 transition">Resort</Link>
+          <Link href="/about" className="hover:text-purple-700 transition">About</Link>
+          <Link href="/contact" className="hover:text-purple-700 transition">Contact</Link>
+          <Link href="/package" className="hover:text-purple-700 transition">Package</Link>
+          <Link href="/booking" className="hover:text-purple-700 transition">Booking</Link>
+          <Link href="/admin/login" className="hover:text-purple-700 transition">Admin</Link>
+        </nav>
 
-      {/* Auth Buttons */}
-      <div className="flex items-center gap-4 mt-3 md:mt-0 text-sm">
-        {email ? (
-          <>
-            <span className="text-gray-800 font-semibold">{email}</span>
-            <button
-              onClick={handleLogout}
-              disabled={loading}
-              className={`px-4 py-2 rounded-md text-sm font-semibold transition ${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed text-white"
-                  : "bg-red-600 hover:bg-red-700 text-white"
-              }`}
+        {/* Auth Buttons Desktop */}
+        <div className="hidden md:flex items-center gap-4">
+          {email ? (
+            <>
+              <span className="text-gray-800 font-semibold">{email}</span>
+              <button
+                onClick={handleLogout}
+                disabled={loading}
+                className={`px-4 py-2 rounded-md text-sm font-semibold transition ${loading
+                    ? "bg-gray-400 cursor-not-allowed text-white"
+                    : "bg-red-600 hover:bg-red-700 text-white"
+                  }`}
+              >
+                {loading ? "Logging out..." : "Logout"}
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition"
             >
-              {loading ? "Logging out..." : "Logout"}
-            </button>
-          </>
-        ) : (
-          <Link
-            href="/login"
-            className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition"
-          >
-            Login
-          </Link>
-        )}
+              Login
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-gray-700 text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <HiX /> : <HiMenu />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-gray-50 px-6 pb-4 space-y-2">
+          <Link href="/rides" className="block hover:text-purple-700 transition">Rider</Link>
+          <Link href="/resorts" className="block hover:text-purple-700 transition">Resort</Link>
+          <Link href="/about" className="block hover:text-purple-700 transition">About</Link>
+          <Link href="/contact" className="block hover:text-purple-700 transition">Contact</Link>
+          <Link href="/package" className="block hover:text-purple-700 transition">Package</Link>
+          <Link href="/booking" className="block hover:text-purple-700 transition">Booking</Link>
+          <Link href="/admin/login" className="block hover:text-purple-700 transition">Admin</Link>
+
+          <div className="mt-2 flex flex-col gap-2">
+            {email ? (
+              <>
+                <span className="text-gray-800 font-semibold">{email}</span>
+                <button
+                  onClick={handleLogout}
+                  disabled={loading}
+                  className={`px-4 py-2 rounded-md text-sm font-semibold transition ${loading
+                      ? "bg-gray-400 cursor-not-allowed text-white"
+                      : "bg-red-600 hover:bg-red-700 text-white"
+                    }`}
+                >
+                  {loading ? "Logging out..." : "Logout"}
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition text-center"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
