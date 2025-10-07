@@ -593,7 +593,8 @@ function AddRideForm() {
                   <Image
                     src={ride.image}
                     alt={ride.rideName}
-                    fill
+                    height={100}
+                    width={100}
                     className="w-16 h-16 object-cover rounded"
                   />
                 ) : (

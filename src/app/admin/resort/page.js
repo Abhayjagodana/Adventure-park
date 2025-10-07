@@ -239,7 +239,8 @@ export default function AddRoomForm() {
                           <Image
                             src={room.image}
                             alt={room.roomType || "Room"}
-                            fill
+                            height={100}
+                            width={100}
                             className="w-24 h-16 object-cover rounded-lg"
                           />
                         ) : (
