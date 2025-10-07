@@ -239,7 +239,8 @@ export default function AddPackageForm() {
                 <Image
                   src={image}
                   alt="Preview"
-                  fill        // ✅ makes the image responsive inside parent div
+                  height={100}
+                  width={100}      // ✅ makes the image responsive inside parent div
                   className="object-cover rounded"
                 />
               </div>
@@ -314,7 +315,8 @@ export default function AddPackageForm() {
                         <Image
                           src={pkg.image}
                           alt={pkg.name}
-                          fill
+                          height={100}
+                          width={100}
                           className="object-cover rounded"
                         />
                       ) : (
