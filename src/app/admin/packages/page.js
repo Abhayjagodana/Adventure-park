@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
 import { Trash, SquarePen } from "lucide-react";
+import Image from "next/image";
 
 export default function AddPackageForm() {
   const [name, setName] = useState("");
@@ -222,6 +223,7 @@ export default function AddPackageForm() {
               required
             />
           </div>
+          import Image from "next/image";
 
           <div className="mb-4">
             <label className="block font-medium">Image</label>
@@ -232,14 +234,19 @@ export default function AddPackageForm() {
               className="w-full border p-2 rounded mb-6"
               required={!editingId} // image required only when adding
             />
+
             {image && (
-              <img
-                src={image}
-                alt="Preview"
-                className="w-32 h-20 object-cover rounded mt-2"
-              />
+              <div className="relative w-32 h-20 mt-2 rounded overflow-hidden">
+                <Image
+                  src={image}
+                  alt="Preview"
+                  fill        // ✅ makes the image responsive inside parent div
+                  className="object-cover rounded"
+                />
+              </div>
             )}
           </div>
+
 
           <button
             type="submit"
@@ -252,95 +259,96 @@ export default function AddPackageForm() {
 
       {/* Packages Table */}
       <div className="bg-white p-6 rounded-2xl shadow-lg overflow-x-auto mx-6 my-10">
-  <h3 className="text-xl font-bold mb-4 text-purple-700 text-center">
-    📦 All Packages
-  </h3>
+        <h3 className="text-xl font-bold mb-4 text-purple-700 text-center">
+          📦 All Packages
+        </h3>
 
-  {packages === null ? (
-    <div className="flex justify-center items-center py-12">
-      <svg
-        className="animate-spin h-10 w-10 text-purple-600"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
-      </svg>
-    </div>
-  ) : (
-    <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
-      <thead>
-        <tr className="bg-purple-50 text-purple-800">
-          <th className="p-2 border">#</th>
-          <th className="p-2 border">Package Name</th>
-          <th className="p-2 border">Adult Price</th>
-          <th className="p-2 border">Teenager Price</th>
-          <th className="p-2 border">Kids Price</th>
-          <th className="p-2 border">Information</th>
-          <th className="p-2 border">Image</th>
-          <th className="p-2 border">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {packages.length > 0 ? (
-          packages.map((pkg, index) => (
-            <tr key={pkg._id} className="hover:bg-gray-50 transition-colors">
-              <td className="p-2 border text-center">{index + 1}</td>
-              <td className="p-2 border">{pkg.name}</td>
-              <td className="p-2 border">₹{pkg.adultPrice}</td>
-              <td className="p-2 border">₹{pkg.teenagerPrice}</td>
-              <td className="p-2 border">₹{pkg.kidsPrice}</td>
-              <td className="p-2 border text-sm text-gray-600">{pkg.information}</td>
-              <td className="p-2 border">
-                {pkg.image ? (
-                  <img
-                    src={pkg.image}
-                    alt={pkg.name}
-                    className="w-24 h-16 object-cover rounded"
-                  />
-                ) : (
-                  <span className="text-gray-400">No Image</span>
-                )}
-              </td>
-              <td className="p-2 border flex gap-2 justify-center">
-                <button
-                  onClick={() => handleEdit(pkg)}
-                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-1"
-                >
-                  <SquarePen size={16} /> Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(pkg._id)}
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 flex items-center gap-1"
-                >
-                  <Trash size={16} /> Delete
-                </button>
-              </td>
-            </tr>
-          ))
+        {packages === null ? (
+          <div className="flex justify-center items-center py-12">
+            <svg
+              className="animate-spin h-10 w-10 text-purple-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+          </div>
         ) : (
-          <tr>
-            <td colSpan={8} className="text-center py-4 text-gray-500">
-              No packages available.
-            </td>
-          </tr>
+          <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-purple-50 text-purple-800">
+                <th className="p-2 border">#</th>
+                <th className="p-2 border">Package Name</th>
+                <th className="p-2 border">Adult Price</th>
+                <th className="p-2 border">Teenager Price</th>
+                <th className="p-2 border">Kids Price</th>
+                <th className="p-2 border">Information</th>
+                <th className="p-2 border">Image</th>
+                <th className="p-2 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {packages.length > 0 ? (
+                packages.map((pkg, index) => (
+                  <tr key={pkg._id} className="hover:bg-gray-50 transition-colors">
+                    <td className="p-2 border text-center">{index + 1}</td>
+                    <td className="p-2 border">{pkg.name}</td>
+                    <td className="p-2 border">₹{pkg.adultPrice}</td>
+                    <td className="p-2 border">₹{pkg.teenagerPrice}</td>
+                    <td className="p-2 border">₹{pkg.kidsPrice}</td>
+                    <td className="p-2 border text-sm text-gray-600">{pkg.information}</td>
+                    <td className="p-2 border">
+                      {pkg.image ? (
+                        <Image
+                          src={pkg.image}
+                          alt={pkg.name}
+                          fill
+                          className="object-cover rounded"
+                        />
+                      ) : (
+                        <span className="text-gray-400">No Image</span>
+                      )}
+                    </td>
+                    <td className="p-2 border flex gap-2 justify-center">
+                      <button
+                        onClick={() => handleEdit(pkg)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-1"
+                      >
+                        <SquarePen size={16} /> Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(pkg._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 flex items-center gap-1"
+                      >
+                        <Trash size={16} /> Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={8} className="text-center py-4 text-gray-500">
+                    No packages available.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         )}
-      </tbody>
-    </table>
-  )}
-</div>
+      </div>
     </div>
   );
 }

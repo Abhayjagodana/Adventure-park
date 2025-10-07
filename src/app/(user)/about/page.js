@@ -47,12 +47,12 @@ export default function AboutPage() {
                         <p className="text-gray-600 mb-6">
                             First join us at Restar Amusement Park, where every moment is an adventure waiting to unfold. Get ready to experience the thrill of a lifetime – your journey into fun begins here!
                         </p>
-                        <a
+                        <Link
                             href="/package"
                             className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition"
                         >
                             Book Your Ticket
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>

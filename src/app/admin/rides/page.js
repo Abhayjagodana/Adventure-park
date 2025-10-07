@@ -263,6 +263,7 @@ import { Trash } from 'lucide-react';
 import { SquarePen } from 'lucide-react';
 import { Plus } from 'lucide-react';
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function AddRideForm() {
       const router = useRouter(); // ✅ Router instance
@@ -589,9 +590,10 @@ function AddRideForm() {
               <td className="p-2 border text-sm text-gray-600">{ride.information}</td>
               <td className="p-2 border">
                 {ride.image ? (
-                  <img
+                  <Image
                     src={ride.image}
                     alt={ride.rideName}
+                    fill
                     className="w-16 h-16 object-cover rounded"
                   />
                 ) : (

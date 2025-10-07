@@ -74,6 +74,7 @@
 import { useEffect, useState } from "react";
 import Header from "../Header/page";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function UserResorts() {
   const [resorts, setResorts] = useState([]);
@@ -134,13 +135,17 @@ export default function UserResorts() {
                 key={room._id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
               >
-                <img
+                import Image from "next/image";
+
+                <Image
                   src={
                     room.image && room.image.trim() !== ""
                       ? room.image
                       : "/placeholder.jpg"
                   }
                   alt={room.roomType || "Room"}
+                  width={500}          // required for Image
+                  height={200}         // required for Image
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">

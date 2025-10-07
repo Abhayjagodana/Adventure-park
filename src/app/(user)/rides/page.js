@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Header from "../Header/page";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function RidesPage() {
   const [rides, setRides] = useState([]);
@@ -59,13 +60,15 @@ export default function RidesPage() {
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
               >
                 {ride.image ? (
-                  <img
+                  <Image
                     src={
                       ride.image && ride.image.trim() !== ""
                         ? ride.image
                         : "/placeholder.jpg"
                     }
-                    alt={ride.rideName}
+                    alt={ride.rideName || "Ride Image"}
+                    width={500}             // required by Next.js Image
+                    height={200}            // required by Next.js Image
                     className="w-full h-48 object-cover"
                   />
                 ) : (

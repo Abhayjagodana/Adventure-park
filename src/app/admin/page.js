@@ -79,7 +79,7 @@ export default function Dashboard() {
       const ok = await verifyAdmin();
       if (ok) fetchCounts();
     })();
-  }, []);
+  }, [router]);
   if (loading) return <Loader />;
   if (error) return <div className="text-center mt-6 text-red-600">{error}</div>;
 

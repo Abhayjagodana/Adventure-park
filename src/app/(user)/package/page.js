@@ -170,6 +170,7 @@
 import { useEffect, useState } from "react";
 import Header from "../Header/page";
 import Link from "next/link";
+import Image from "next/image";
 
 function UserPackages() {
   const [packages, setPackages] = useState([]);
@@ -235,9 +236,11 @@ function UserPackages() {
                 {/* Image at the top */}
                 <div className="h-48 w-full overflow-hidden">
                   {pkg.image ? (
-                    <img
+                    <Image
                       src={pkg.image.trim() !== "" ? pkg.image : "/placeholder.jpg"}
                       alt={pkg.name}
+                      width={500} // required
+                      height={300} // required
                       className="w-full h-full object-cover"
                     />
                   ) : (

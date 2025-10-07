@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminHeader from "../header/page";
+import Image from "next/image";
 
 
 export default function AddRoomForm() {
@@ -235,9 +236,10 @@ export default function AddRoomForm() {
                     <tr key={room._id || Math.random()} className="hover:bg-purple-50 transition duration-200">
                       <td className="px-4 py-3">
                         {room.image ? (
-                          <img
+                          <Image
                             src={room.image}
                             alt={room.roomType || "Room"}
+                            fill
                             className="w-24 h-16 object-cover rounded-lg"
                           />
                         ) : (

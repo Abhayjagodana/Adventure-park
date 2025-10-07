@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import AdminHeader from "../header/page";
 import Loader from "../loader";
+import Image from "next/image";
 
 export default function UserListPage() {
     const [users, setUsers] = useState([]);
@@ -94,9 +95,10 @@ export default function UserListPage() {
                     <td className="border px-6 py-3">{user.contact}</td>
                     <td className="border px-6 py-3">
                       {user.profile_picture ? (
-                        <img
+                        <Image
                           src={`/uploads/${user.profile_picture}`}
                           alt={user.name}
+                          fill
                           className="h-12 w-12 rounded-full object-cover border border-gray-300"
                         />
                       ) : (
@@ -140,9 +142,10 @@ export default function UserListPage() {
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-purple-700">Profile:</span>
                     {user.profile_picture ? (
-                      <img
+                      <Image
                         src={`/uploads/${user.profile_picture}`}
                         alt={user.name}
+                        fill
                         className="h-14 w-14 rounded-full object-cover border border-gray-300"
                       />
                     ) : (
