@@ -131,7 +131,7 @@ export default function AddPackageForm() {
 
   // Delete package
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this package?")) return;
+    if (!confirm('Are you sure you want to delete this package?')) return;
 
     try {
       const res = await fetch(`/api/admin/packages/${id}`, { method: "DELETE" });
@@ -223,7 +223,6 @@ export default function AddPackageForm() {
               required
             />
           </div>
-          import Image from "next/image";
 
           <div className="mb-4">
             <label className="block font-medium">Image</label>

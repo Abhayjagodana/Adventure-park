@@ -135,9 +135,8 @@ export default function UserResorts() {
                 key={room._id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
               >
-                import Image from "next/image";
 
-                <Image
+                {/* <Image
                   src={
                     room.image && room.image.trim() !== ""
                       ? room.image
@@ -146,6 +145,13 @@ export default function UserResorts() {
                   alt={room.roomType || "Room"}
                   width={500}          // required for Image
                   height={200}         // required for Image
+                  className="w-full h-48 object-cover"
+                /> */}
+                 <Image
+                  src={room.image?.trim() ? room.image : "/placeholder.jpg"}
+                  alt={room.roomType || "Room"}
+                  width={500}
+                  height={200}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
